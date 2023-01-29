@@ -1,9 +1,7 @@
 package pages;
 
 import org.company.configReader.ConfigReader;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.support.FindBy;
@@ -44,61 +42,81 @@ public class DragAndDrop {
 
         Thread.sleep(2000);
 
+
        // builder.dragAndDrop(textElementA,elementB).perform();
         Thread.sleep(2000);
 
 
+//
+//        final String java_script =
+//
+//                        "var dragSrcEl = null;" +
+//                        "function handleDragStart(e) {" +
+//                        "  this.style.opacity = '0.4';" +
+//
+//                        "  dragSrcEl = this;" +
+//                        "  e.dataTransfer.effectAllowed = 'move';" +
+//                        "  e.dataTransfer.setData('text/html', this.innerHTML);}" +
+//                        "function handleDragOver(e) {" +
+//                        "  if (e.preventDefault) {" +
+//                        "    e.preventDefault();" +
+//                        "  }" +
+//                        "  e.dataTransfer.dropEffect = 'move';" +
+//
+//                        "  return false;" +
+//                        "}" +
+//
+//                        "function handleDragEnter(e) {" +
+//                        "  this.classList.add('over');" +
+//                        "}" +
+//                        "function handleDragLeave(e) {" +
+//                        "  this.classList.remove('over');" +
+//                        "}" +
+//                        "function handleDrop(e) {" +
+//                        "  if (e.stopPropagation) {" +
+//                        "    e.stopPropagation();" +
+//                        "  }" +
+//                        "  if (dragSrcEl != this) {" +
+//                        "    dragSrcEl.innerHTML = this.innerHTML;" +
+//                        "    this.innerHTML = e.dataTransfer.getData('text/html');" +
+//                        "  }" +
+//                        "  return false;" +
+//                        "}" +
+//                        "function handleDragEnd(e) {" +
+//                        "  [].forEach.call(cols, function (col) {" +
+//                        "    col.classList.remove('over');" +
+//                        "  });" +
+//                        "  this.style.opacity = '1';" +
+//                        "}" +
+//                        "var cols = document.querySelectorAll('#columns .column');" +
+//                        "[].forEach.call(cols, function(col) {" +
+//                        "  col.addEventListener('dragstart', handleDragStart, false);" +
+//                        "  col.addEventListener('dragenter', handleDragEnter, false);" +
+//                        "  col.addEventListener('dragover', handleDragOver, false);" +
+//                        "  col.addEventListener('dragleave', handleDragLeave, false);" +
+//                        "  col.addEventListener('drop', handleDrop, false);" +
+//                        "  col.addEventListener('dragend', handleDragEnd, false);})";
+//
+//        Object script = ((JavascriptExecutor) driver).executeScript(java_script, textElementA, textElementB);
 
-        final String java_script =
 
-                        "var dragSrcEl = null;" +
-                        "function handleDragStart(e) {" +
-                        "  this.style.opacity = '0.4';" +
+        Locatable element = (Locatable)elementA ;
+        Point p= element.getCoordinates().inViewPort();
+        int sourceX=p.getX();
+        int sourceY=p.getY();
 
-                        "  dragSrcEl = this;" +
-                        "  e.dataTransfer.effectAllowed = 'move';" +
-                        "  e.dataTransfer.setData('text/html', this.innerHTML);}" +
-                        "function handleDragOver(e) {" +
-                        "  if (e.preventDefault) {" +
-                        "    e.preventDefault();" +
-                        "  }" +
-                        "  e.dataTransfer.dropEffect = 'move';" +
 
-                        "  return false;" +
-                        "}" +
+        Locatable elementTarget = (Locatable)elementB;
+        Point Target= elementTarget.getCoordinates().inViewPort();
+        int targetX=Target.getX();
+        int targetY=Target.getY();
 
-                        "function handleDragEnter(e) {" +
-                        "  this.classList.add('over');" +
-                        "}" +
-                        "function handleDragLeave(e) {" +
-                        "  this.classList.remove('over');" +
-                        "}" +
-                        "function handleDrop(e) {" +
-                        "  if (e.stopPropagation) {" +
-                        "    e.stopPropagation();" +
-                        "  }" +
-                        "  if (dragSrcEl != this) {" +
-                        "    dragSrcEl.innerHTML = this.innerHTML;" +
-                        "    this.innerHTML = e.dataTransfer.getData('text/html');" +
-                        "  }" +
-                        "  return false;" +
-                        "}" +
-                        "function handleDragEnd(e) {" +
-                        "  [].forEach.call(cols, function (col) {" +
-                        "    col.classList.remove('over');" +
-                        "  });" +
-                        "  this.style.opacity = '1';" +
-                        "}" +
-                        "var cols = document.querySelectorAll('#columns .column');" +
-                        "[].forEach.call(cols, function(col) {" +
-                        "  col.addEventListener('dragstart', handleDragStart, false);" +
-                        "  col.addEventListener('dragenter', handleDragEnter, false);" +
-                        "  col.addEventListener('dragover', handleDragOver, false);" +
-                        "  col.addEventListener('dragleave', handleDragLeave, false);" +
-                        "  col.addEventListener('drop', handleDrop, false);" +
-                        "  col.addEventListener('dragend', handleDragEnd, false);})";
 
-        Object script = ((JavascriptExecutor) driver).executeScript(java_script, textElementA, textElementB);
+
+
+
+
+
         Thread.sleep(2000);
         Thread.sleep(2000);
         System.out.println(elementB.getText());

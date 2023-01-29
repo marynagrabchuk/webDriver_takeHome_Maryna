@@ -31,19 +31,38 @@ public class JavaScripError {
     private WebElement error;
 
     public void verifyJavaScripError() throws InterruptedException {
+
+
+
         navigateToJSErrorPage();
 
-        Set<String> logtyp = driver.manage().logs().getAvailableLogTypes();
-        for (String s : logtyp) {
-            System.out.println(logtyp);
-        }
-        LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
-        List<LogEntry> lg = logEntries.getAll();
 
-        for(LogEntry logEntry : lg) {
+        LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
+        for (LogEntry log: logs) {
+            String logMessage = log.getMessage();
+            if (logMessage.contains("Cannot read properties of undefined (reading 'xyz')")){
+                softAssert.assertTrue(true);
+                break;
+            }
 
-            System.out.println(logEntry);
+
         }
+
+
+//        Set<String> logtyp = driver.manage().logs().getAvailableLogTypes();
+//        for (String s : logtyp) {
+//            System.out.println(logtyp);
+//
+//        }
+//        LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
+//        List<LogEntry> lg = logEntries.getAll();
+//
+//        for(LogEntry logEntry : lg) {
+//
+//            System.out.println(logEntry);
+//        }
+////        var str = "GeeksforGeeks";
+////        console.log(str);
 
 
     }
