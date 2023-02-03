@@ -35,98 +35,30 @@ public class DragAndDrop {
 
     public void verifyDragAndDropFunctionality() throws InterruptedException {
         navigateDragAndDrop();
-        Actions builder = new Actions(driver);
-       // builder.moveToElement(elementA).clickAndHold().moveToElement(elementB).release().perform();
-       // builder.clickAndHold(textElementA).moveToElement(elementB).release().perform();
-        //builder.dragAndDropBy(elementA,150,150).perform();
-
-        Thread.sleep(2000);
-
-
-       // builder.dragAndDrop(textElementA,elementB).perform();
-        Thread.sleep(2000);
-
-
-//
-//        final String java_script =
-//
-//                        "var dragSrcEl = null;" +
-//                        "function handleDragStart(e) {" +
-//                        "  this.style.opacity = '0.4';" +
-//
-//                        "  dragSrcEl = this;" +
-//                        "  e.dataTransfer.effectAllowed = 'move';" +
-//                        "  e.dataTransfer.setData('text/html', this.innerHTML);}" +
-//                        "function handleDragOver(e) {" +
-//                        "  if (e.preventDefault) {" +
-//                        "    e.preventDefault();" +
-//                        "  }" +
-//                        "  e.dataTransfer.dropEffect = 'move';" +
-//
-//                        "  return false;" +
-//                        "}" +
-//
-//                        "function handleDragEnter(e) {" +
-//                        "  this.classList.add('over');" +
-//                        "}" +
-//                        "function handleDragLeave(e) {" +
-//                        "  this.classList.remove('over');" +
-//                        "}" +
-//                        "function handleDrop(e) {" +
-//                        "  if (e.stopPropagation) {" +
-//                        "    e.stopPropagation();" +
-//                        "  }" +
-//                        "  if (dragSrcEl != this) {" +
-//                        "    dragSrcEl.innerHTML = this.innerHTML;" +
-//                        "    this.innerHTML = e.dataTransfer.getData('text/html');" +
-//                        "  }" +
-//                        "  return false;" +
-//                        "}" +
-//                        "function handleDragEnd(e) {" +
-//                        "  [].forEach.call(cols, function (col) {" +
-//                        "    col.classList.remove('over');" +
-//                        "  });" +
-//                        "  this.style.opacity = '1';" +
-//                        "}" +
-//                        "var cols = document.querySelectorAll('#columns .column');" +
-//                        "[].forEach.call(cols, function(col) {" +
-//                        "  col.addEventListener('dragstart', handleDragStart, false);" +
-//                        "  col.addEventListener('dragenter', handleDragEnter, false);" +
-//                        "  col.addEventListener('dragover', handleDragOver, false);" +
-//                        "  col.addEventListener('dragleave', handleDragLeave, false);" +
-//                        "  col.addEventListener('drop', handleDrop, false);" +
-//                        "  col.addEventListener('dragend', handleDragEnd, false);})";
-//
-//        Object script = ((JavascriptExecutor) driver).executeScript(java_script, textElementA, textElementB);
-
-
-        Locatable element = (Locatable)elementA ;
-        Point p= element.getCoordinates().inViewPort();
-        int sourceX=p.getX();
-        int sourceY=p.getY();
-
-
-        Locatable elementTarget = (Locatable)elementB;
-        Point Target= elementTarget.getCoordinates().inViewPort();
-        int targetX=Target.getX();
-        int targetY=Target.getY();
-
-
-
-
-
-
-
-        Thread.sleep(2000);
-        Thread.sleep(2000);
-        System.out.println(elementB.getText());
-
-
-
-
+        dragAndDrop(elementA, elementB);
         softAssert.assertTrue(textElementB.getText().equalsIgnoreCase("A"), "The item didn't dragged and drop");
-
     }
+
+    public void dragAndDrop(WebElement from, WebElement to) {
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("function createEvent(typeOfEvent) {\n" + "var event =document.createEvent(\"CustomEvent\");\n"
+                + "event.initCustomEvent(typeOfEvent,true, true, null);\n" + "event.dataTransfer = {\n" + "data: {},\n"
+                + "setData: function (key, value) {\n" + "this.data[key] = value;\n" + "},\n"
+                + "getData: function (key) {\n" + "return this.data[key];\n" + "}\n" + "};\n" + "return event;\n"
+                + "}\n" + "\n" + "function dispatchEvent(element, event,transferData) {\n"
+                + "if (transferData !== undefined) {\n" + "event.dataTransfer = transferData;\n" + "}\n"
+                + "if (element.dispatchEvent) {\n" + "element.dispatchEvent(event);\n"
+                + "} else if (element.fireEvent) {\n" + "element.fireEvent(\"on\" + event.type, event);\n" + "}\n"
+                + "}\n" + "\n" + "function simulateHTML5DragAndDrop(element, destination) {\n"
+                + "var dragStartEvent =createEvent('dragstart');\n" + "dispatchEvent(element, dragStartEvent);\n"
+                + "var dropEvent = createEvent('drop');\n"
+                + "dispatchEvent(destination, dropEvent,dragStartEvent.dataTransfer);\n"
+                + "var dragEndEvent = createEvent('dragend');\n"
+                + "dispatchEvent(element, dragEndEvent,dropEvent.dataTransfer);\n" + "}\n" + "\n"
+                + "var source = arguments[0];\n" + "var destination = arguments[1];\n"
+                + "simulateHTML5DragAndDrop(source,destination);", from, to);
+    }
+
     private void navigateDragAndDrop(){
         driver.get(ConfigReader.getProperty("url")+"/drag_and_drop");
     }
